@@ -184,7 +184,7 @@ const Home: NextPage = () => {
     setUser_tck(no_of_user_ticket);
   }, [gettickets, address]);
 
-  if (isLoading) {
+  if (!isLoading) {
     return (
       <>
         <div className="flex flex-col justify-center items-center min-h-screen">
