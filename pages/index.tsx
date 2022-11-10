@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 
   const address = useAddress();
   const disconnect = useDisconnect();
-  const { contract, isLoading } = useContract(process.env.NEXT_PUBLIC_LOTTERY_ADDRESS);
+  const { contract, isLoading } = useContract("0x260f8f7236c0Bb3D452a6D0983C4eA7a581c2489");
   const { data: remainingtickets } = useContractRead(contract, "RemainingTickets");
   const { data: currentWinningReward } = useContractRead(contract, "CurrentWinningReward");
   const { data: ticketprice } = useContractRead(contract, "ticketPrice");
