@@ -33,7 +33,7 @@ const Home: NextPage = () => {
 
   const address = useAddress();
   const disconnect = useDisconnect();
-  const { contract, isLoading } = useContract("0x260f8f7236c0Bb3D452a6D0983C4eA7a581c2489");
+  const { contract, isLoading } = useContract(process.env.NEXT_PUBLIC_LOTTERY_ADDRESS);
   const { data: remainingtickets } = useContractRead(contract, "RemainingTickets");
   const { data: currentWinningReward } = useContractRead(contract, "CurrentWinningReward");
   const { data: ticketprice } = useContractRead(contract, "ticketPrice");
@@ -184,7 +184,7 @@ const Home: NextPage = () => {
     setUser_tck(no_of_user_ticket);
   }, [gettickets, address]);
 
-  if (!isLoading) {
+  if (isLoading) {
     return (
       <>
         <div className="flex flex-col justify-center items-center min-h-screen">
