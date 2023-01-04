@@ -195,151 +195,152 @@ const Home: NextPage = () => {
         </div>
       </>
     )
-  }
-  return (
-    <>
-      {address && (
-        <>
-          {/* <button onClick={ondrawwinnerticket}>test</button> */}
-          <div className='flex justify-end sm:justify-center my-2'>
-            <button className="mx-2 py-2 px-4 text-white bg-black rounded">BuyTicket</button>
-            <button className="mx-2 py-2 px-4 text-white bg-gray-600 rounded" onClick={disconnect}>Logout</button>
-          </div>
-        </>
-      )}
+  } else {
+    return (
+      <>
+        {address && (
+          <>
+            {/* <button onClick={ondrawwinnerticket}>test</button> */}
+            <div className='flex justify-end sm:justify-center my-2'>
+              <button className="mx-2 py-2 px-4 text-white bg-black rounded">BuyTicket</button>
+              <button className="mx-2 py-2 px-4 text-white bg-gray-600 rounded" onClick={disconnect}>Logout</button>
+            </div>
+          </>
+        )}
 
-      <div className="flex min-h-screen flex-col justify-center py-2 sm:items-center">
-        <Head>
-          <title>Next Lottery App</title>
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <div>
-          {address ? (
-            <>
+        <div className="flex min-h-screen flex-col justify-center py-2 sm:items-center">
+          <Head>
+            <title>Next Lottery App</title>
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <div>
+            {address ? (
+              <>
 
-              {/* marquee */}
-              <Marquee speed={100} gradientColor={[1, 1, 1]} pauseOnHover={true} className="text-white font-bold m-2">
-                <p>last winner {lastWinner?.toString()}&nbsp;</p>
-                <p>last winner amount {lastWinnerAmount && ethers.utils.formatEther(lastWinnerAmount?.toString())}{" "}{currency}</p>
-              </Marquee>
+                {/* marquee */}
+                <Marquee speed={100} gradientColor={[1, 1, 1]} pauseOnHover={true} className="text-white font-bold m-2">
+                  <p>last winner {lastWinner?.toString()}&nbsp;</p>
+                  <p>last winner amount {lastWinnerAmount && ethers.utils.formatEther(lastWinnerAmount?.toString())}{" "}{currency}</p>
+                </Marquee>
 
-              {/* admin control  */}
-              {address === process.env.NEXT_PUBLIC_ADMINCONTROL_ADDRESS && (
-                <>
-                  <AdminControl ondrawwinnerticket={ondrawwinnerticket} onwithdrawcommission={onwithdrawcommission} onrestartdraw={onrestartdraw} onrefundall={onrefundall} />
-                </>
-              )}
+                {/* admin control  */}
+                {address === process.env.NEXT_PUBLIC_ADMINCONTROL_ADDRESS && (
+                  <>
+                    <AdminControl ondrawwinnerticket={ondrawwinnerticket} onwithdrawcommission={onwithdrawcommission} onrestartdraw={onrestartdraw} onrefundall={onrefundall} />
+                  </>
+                )}
 
-              {/* Connected */}
-              <h4 className='flex justify-center m-2'>
-                <span className='text-white'>Connected as {" "}</span>
-                <span className='text-[#43BEE5] font-bold'>&ensp;{address.substring(0, 5)}....{address.substring(address.length - 5, address.length)}</span>
-              </h4>
+                {/* Connected */}
+                <h4 className='flex justify-center m-2'>
+                  <span className='text-white'>Connected as {" "}</span>
+                  <span className='text-[#43BEE5] font-bold'>&ensp;{address.substring(0, 5)}....{address.substring(address.length - 5, address.length)}</span>
+                </h4>
 
-              {/* winner */}
-              {winner > 0 && (
-                <>
-                  <div className="flex flex-1 justify-center text-white font-bold items-center m-2">
-                    <p>Total Winning {ethers.utils.formatEther(winner.toString())}{" "}{currency}</p>
-                    <button className="p-1 bg-black text-white rounded ml-2" onClick={onwithdrawWinnings}>&ensp;click here</button>
+                {/* winner */}
+                {winner > 0 && (
+                  <>
+                    <div className="flex flex-1 justify-center text-white font-bold items-center m-2">
+                      <p>Total Winning {ethers.utils.formatEther(winner.toString())}{" "}{currency}</p>
+                      <button className="p-1 bg-black text-white rounded ml-2" onClick={onwithdrawWinnings}>&ensp;click here</button>
+                    </div>
+                  </>
+                )}
+
+                <div className="flex flex-col sm:flex-row text-[green] font-bold justify-center">
+                  {/* left box  */}
+                  <div className="bg-[#43BEE5] border-2 rounded-lg border-black m-1">
+                    <h1 className="flex justify-center text-[#161B40] font-mono font-bold">Next Lucky Draw</h1>
+                    <div className="flex p-2 sm:w-96">
+                      <div className="flex-1 border-2 border-black rounded-2 mx-1 px-1 font-serif">
+                        <h1>total price</h1>
+                        <h1>{currentWinningReward && ethers.utils.formatEther(currentWinningReward.toString())} {currency}</h1>
+                      </div>
+                      <div className="flex-1 border-2 border-black rounded-2 mx-1 px-1 font-serif">
+                        <h1>ticket remaining</h1>
+                        <h1>{remainingtickets?.toNumber()}</h1>
+                      </div>
+                    </div>
+                    {/* countdown */}
+                    <Countdown date={new Date(expiration * 1000)} renderer={cntdwn} />
+                    {/* countdown */}
                   </div>
-                </>
-              )}
 
-              <div className="flex flex-col sm:flex-row text-[green] font-bold justify-center">
-                {/* left box  */}
-                <div className="bg-[#43BEE5] border-2 rounded-lg border-black m-1">
-                  <h1 className="flex justify-center text-[#161B40] font-mono font-bold">Next Lucky Draw</h1>
-                  <div className="flex p-2 sm:w-96">
-                    <div className="flex-1 border-2 border-black rounded-2 mx-1 px-1 font-serif">
-                      <h1>total price</h1>
-                      <h1>{currentWinningReward && ethers.utils.formatEther(currentWinningReward.toString())} {currency}</h1>
-                    </div>
-                    <div className="flex-1 border-2 border-black rounded-2 mx-1 px-1 font-serif">
-                      <h1>ticket remaining</h1>
-                      <h1>{remainingtickets?.toNumber()}</h1>
-                    </div>
-                  </div>
-                  {/* countdown */}
-                  <Countdown date={new Date(expiration * 1000)} renderer={cntdwn} />
-                  {/* countdown */}
-                </div>
+                  {/* right box  */}
+                  <div className="bg-[#43BEE5] border-2 rounded-lg border-black m-1">
+                    {/* <h1 className="flex justify-center text-white">left box</h1> */}
+                    <div className="border-2 rounded-lg border-black m-2">
+                      <div className="flex items-center mx-1 justify-between font-serif">
+                        <h1>price per ticket</h1>
+                        <h1>0.01matic</h1>
+                      </div>
 
-                {/* right box  */}
-                <div className="bg-[#43BEE5] border-2 rounded-lg border-black m-1">
-                  {/* <h1 className="flex justify-center text-white">left box</h1> */}
-                  <div className="border-2 rounded-lg border-black m-2">
-                    <div className="flex items-center mx-1 justify-between font-serif">
-                      <h1>price per ticket</h1>
-                      <h1>0.01matic</h1>
-                    </div>
-
-                    <div className="border-2 rounded-lg border-black m-1 font-serif">
-                      <input type="number" min={1} max={10} step={1} value={quantity} onChange={(e) => {
-                        setQuantity(Number(e.target.value))
-                      }} />
-                    </div>
-                    <div className="flex items-center mx-1 justify-between font-serif">
-                      <h1>total cost of ticket</h1>
-                      <h1>{ticketprice && ethers.utils.formatEther(Number(ticketprice * quantity).toString())} {currency}</h1>
-                    </div>
-                    <div className="flex items-center mx-1 justify-between font-serif">
-                      <h1>service fee</h1>
-                      <h1>{ticketcommission && ethers.utils.formatEther(ticketcommission.toString())} {currency}</h1>
-                    </div>
-                    <div className="flex items-center mx-1 justify-between font-serif">
-                      <h1>Amount fee</h1>
-                      <h1>0.01matic</h1>
-                    </div>
-                    <div className="flex justify-center items-center m-2">
-                      <button className="bg-[#F40058] text-white p-2 disabled:cursor-not-allowed rounded" disabled={expiration?.toString() < Date.now().toString() || remainingtickets?.toString() === "0"} onClick={buytkt}>
-                        buy {quantity} ticket for {ticketprice && ethers.utils.formatEther(Number(ticketprice * quantity).toString())} {currency}
-                      </button>
-                    </div>
-                    {user_tck > 0 && (
-                      <>
-                        <div className="bg-[#43BEE5] border-2 rounded-lg border-black m-1">
-                          <p>you have {user_tck} Tickets in this Draw</p>
-                          <div className='flex flex-wrap gap-2'>
-                            {Array(user_tck).fill("").map((_, index) => (
-                              <p key={index} className="bg-yellow-500 text-white h-10 w-10 text-center rounded-lg justify-center items-center">{index + 1}</p>
-                            ))}
+                      <div className="border-2 rounded-lg border-black m-1 font-serif">
+                        <input type="number" min={1} max={10} step={1} value={quantity} onChange={(e) => {
+                          setQuantity(Number(e.target.value))
+                        }} />
+                      </div>
+                      <div className="flex items-center mx-1 justify-between font-serif">
+                        <h1>total cost of ticket</h1>
+                        <h1>{ticketprice && ethers.utils.formatEther(Number(ticketprice * quantity).toString())} {currency}</h1>
+                      </div>
+                      <div className="flex items-center mx-1 justify-between font-serif">
+                        <h1>service fee</h1>
+                        <h1>{ticketcommission && ethers.utils.formatEther(ticketcommission.toString())} {currency}</h1>
+                      </div>
+                      <div className="flex items-center mx-1 justify-between font-serif">
+                        <h1>Amount fee</h1>
+                        <h1>0.01matic</h1>
+                      </div>
+                      <div className="flex justify-center items-center m-2">
+                        <button className="bg-[#F40058] text-white p-2 disabled:cursor-not-allowed rounded" disabled={expiration?.toString() < Date.now().toString() || remainingtickets?.toString() === "0"} onClick={buytkt}>
+                          buy {quantity} ticket for {ticketprice && ethers.utils.formatEther(Number(ticketprice * quantity).toString())} {currency}
+                        </button>
+                      </div>
+                      {user_tck > 0 && (
+                        <>
+                          <div className="bg-[#43BEE5] border-2 rounded-lg border-black m-1">
+                            <p>you have {user_tck} Tickets in this Draw</p>
+                            <div className='flex flex-wrap gap-2'>
+                              {Array(user_tck).fill("").map((_, index) => (
+                                <p key={index} className="bg-yellow-500 text-white h-10 w-10 text-center rounded-lg justify-center items-center">{index + 1}</p>
+                              ))}
+                            </div>
                           </div>
-                        </div>
-                      </>
-                    )}
+                        </>
+                      )}
+                    </div>
                   </div>
                 </div>
-              </div>
-            </>
-          ) : (
-            <>
-              <div className='mb-2'>
-                <h1 className='text-white'>Login please with <span className='font-bold text-[#43BEE5]'>metamask</span> </h1>
-                <button className="bg-black text-white p-1 mt-2 rounded" onClick={connectWithMetamask}>
-                  Connect Metamask Wallet
-                </button>
-              </div>
-            </>
-          )}
-        </div>
-        {/* {address && <button className="bg-black text-white p-1 mt-2 rounded" onClick={disconnect}>logout</button>} */}
+              </>
+            ) : (
+              <>
+                <div className='mb-2'>
+                  <h1 className='text-white'>Login please with <span className='font-bold text-[#43BEE5]'>metamask</span> </h1>
+                  <button className="bg-black text-white p-1 mt-2 rounded" onClick={connectWithMetamask}>
+                    Connect Metamask Wallet
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+          {/* {address && <button className="bg-black text-white p-1 mt-2 rounded" onClick={disconnect}>logout</button>} */}
 
-        <footer className="flex h-24 w-full items-center justify-center border-t">
-          <a
-            className="flex items-center justify-center gap-2"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className='text-white'>Powered by{' '}</span>
-            {/* <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /> */}
-            <h1 className='text-[yellow]'>@Asu Salman</h1>
-          </a>
-        </footer>
-      </div>
-    </>
-  )
+          <footer className="flex h-24 w-full items-center justify-center border-t">
+            <a
+              className="flex items-center justify-center gap-2"
+              href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className='text-white'>Powered by{' '}</span>
+              {/* <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} /> */}
+              <h1 className='text-[yellow]'>@Asu Salman</h1>
+            </a>
+          </footer>
+        </div>
+      </>
+    )
+  }
 }
 
 export default Home
